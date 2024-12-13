@@ -29,7 +29,7 @@ Create a HTML file to implement form based input and output.
 Publish the website in the given URL.
 
 # PROGRAM :
-
+math.html:
 ```
 <!DOCTYPE html>
 <html lang="en">
@@ -104,6 +104,40 @@ Publish the website in the given URL.
 </html>
 
 ```
+views.py
+```
+from django.shortcuts import render
+def power_calculator(request):
+   context={}
+   context['power'] = "0"
+   context['I'] = "0"
+   context['R'] = "0"
+   if request.method == 'POST':
+      print("POST method is used")
+      I = request.POST.get('intensity','0')
+      R = request.POST.get('resistance','0')
+      print('request=',request)
+      print('resistance=',R)
+      print('intensity',I)
+      power = int(I)**2*int(R)
+      context['power'] = power
+      context['I'] = I
+      context['R'] = R
+      print('Power',power)
+   return render(request,'calculator/math.html',context)
+```
+url.py:
+```
+from django.contrib import admin
+from django.urls import path
+from power import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('power/',views.power_calculator,name='power-calculator'),
+]
+```
+
 
 # SERVER SIDE PROCESSING:
 ![alt text](<Screenshot 2024-12-07 144925.png>)
